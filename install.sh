@@ -4,39 +4,6 @@ DOTFILES_DIR="$(pwd)/dotfiles"
 TOOLS_DIR="$(pwd)/tools"
 HOME_DIR="$HOME"
 
-banner(){
-    echo "██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗     "
-    echo "██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║     "
-    echo "██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║     "
-    echo "██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     "
-    echo "██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗"
-    echo "╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝"
-    echo "                              Created by @7acini      "
-}
-
-# Função para confirmar a instalação
-confirm_installation() {
-    while true; do
-        read -p "Você deseja prosseguir com a instalação [Y/n]: " resposta
-        case $resposta in
-            [Yy]* )
-                echo "Iniciando a instalação..."
-                install_tools
-                break
-                ;;
-            [Nn]* )
-                echo "Instalação cancelada."
-                exit 0
-                ;;
-            * )
-                echo "Opção inválida. Por favor, responda com 'Y' para sim ou 'n' para não."
-                # Nenhum break ou exit aqui, pois o loop continua até uma entrada válida
-                ;;
-        esac
-    done
-}
-
-
 install_tools() {
     echo "Iniciando a instalação das ferramentas..."
     # Verifica se a pasta tools existe
@@ -61,4 +28,4 @@ install_tools() {
 }
 
 banner
-confirm_installation
+install_tools
