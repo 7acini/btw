@@ -1,44 +1,55 @@
 #!/bin/bash
 
-# Instala o Zsh
-sudo apt install zsh -y
+banner() {
+    echo "███████╗███████╗██╗  ██╗      ██████╗  ██╗ ██████╗ ██╗  ██╗"
+    echo "╚══███╔╝██╔════╝██║  ██║      ██╔══██╗███║██╔═████╗██║ ██╔╝"
+    echo "  ███╔╝ ███████╗███████║█████╗██████╔╝╚██║██║██╔██║█████╔╝ "
+    echo " ███╔╝  ╚════██║██╔══██║╚════╝██╔═══╝  ██║████╔╝██║██╔═██╗ "
+    echo "███████╗███████║██║  ██║      ██║      ██║╚██████╔╝██║  ██╗"
+    echo "╚══════╝╚══════╝╚═╝  ╚═╝      ╚═╝      ╚═╝ ╚═════╝ ╚═╝  ╚═╝"
+}
 
-# Exibe a versão do Zsh
+install_zsh() {
+    if ! command -v zsh &> /dev/null; then
+        echo "Instalando o Zsh..."
+        sudo apt update && sudo apt install zsh -y
+    else
+        echo "O Zsh já está instalado."
+    fi
+}
+
+set_default_shell() {
+    if [[ "$SHELL" != "/usr/bin/zsh" ]]; then
+        echo "Definindo o Zsh como shell padrão..."
+        chsh -s /usr/bin/zsh
+        echo "Por favor, faça logout e login novamente para que a alteração tenha efeito."
+    else
+        echo "O Zsh já é o shell padrão."
+    fi
+}
+
+install_oh_my_zsh() {
+    if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+        echo "Instalando Oh My Zsh..."
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    else
+        echo "Oh My Zsh já está instalado."
+    fi
+}
+
+install_powerlevel10k() {
+    if [[ ! -d "$HOME/.powerlevel10k" ]]; then
+        echo "Instalando Powerlevel10k..."
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+    else
+        echo "Powerlevel10k já está instalado."
+    fi
+}
+
+
+banner
+install_zsh
 zsh --version
-
-# Define o Zsh como shell padrão
-chsh -s /usr/bin/zsh 
-
-# Exibe o shell atual
-echo $SHELL
-
-# Mensagem para o usuário
-echo "Faça logout e login novamente se o Zsh não for reconhecido como shell padrão."
-
-# Instala o Oh My Zsh (necessário ter o curl instalado)
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Define o tema Agnoster como padrão
-sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
-
-# Instala a fonte Powerline
-sudo apt-get install fonts-powerline -y
-
-# Instala o tema Powerlevel10k
-sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-# Define o tema Powerlevel10k no Zsh
-sed -i 's/ZSH_THEME="agnoster"/ZSH_THEME="powerlevel10k\/powerlevel10k"/g' ~/.zshrc
-
-# Instala os plugins zsh-autosuggestions e zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 
-
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
-# Habilita os plugins no arquivo de configuração do Zsh
-sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' ~/.zshrc
-
-echo "Se o assistente de configuração do Powerlevel10k não iniciar automaticamente, execute:"
-echo "p10k configure"
+set_default_shell
+install_oh_my_zsh
+install_powerlevel10k

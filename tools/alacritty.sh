@@ -11,13 +11,24 @@ banner() {
 
 }
 
+install_alacritty() {
+    if ! command -V alacritty; then
+
+        sudo apt install alacritty -y
+
+    else
+        echo "Alacritty já Instalado"
+
+    fi    
+}
+
 confirm_installation() {
     while true; do
         read -p "Você deseja instalar o Alacritty [Y/n]: " resposta
         case $resposta in
             [Yy]* )
                 echo "Iniciando a instalação..."
-                install_tools
+                install_alacritty
                 break
                 ;;
             [Nn]* )
@@ -32,17 +43,5 @@ confirm_installation() {
     done
 }
 
-install_alacritty() {
-    if ! command -V alacritty; then
-
-        sudo apt install alacritty -y
-
-    else
-        echo "Alacritty já Instalado"
-
-    fi    
-}
-
 banner
 confirm_installation
-install_alacritty
