@@ -11,16 +11,17 @@ echo_banner() {
     echo "====================================="
 }
 
-# Função para criar links simbólicos dos arquivos de configuração
+# Função para mover os arquivos de configuração para $HOME
 install_dotfiles() {
-    echo "Configurando dotfiles..."
+    echo "Movendo dotfiles para $HOME_DIR..."
     
     for file in "$DOTFILES_DIR"/*; do
         filename=$(basename "$file")
         target="$HOME_DIR/.$filename"
         
         if [ -f "$target" ] || [ -L "$target" ]; then
-            read -p "$target já existe. Deseja sobrescrever? (s/n): " choice
+            echo "$target já existe. Deseja sobrescrever? (s/n): "
+            read choice
             if [ "$choice" != "s" ]; then
                 echo "Ignorando $filename"
                 continue
@@ -28,8 +29,8 @@ install_dotfiles() {
             rm -f "$target"
         fi
         
-        ln -s "$file" "$target"
-        echo "$filename vinculado a $target"
+        cp "$file" "$target"
+        echo "$filename movido para $target"
     done
 }
 
